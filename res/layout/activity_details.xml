@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="com.sreesharp.imagesearch.DetailsActivity$PlaceholderFragment" >
 
-    <ImageView
+    <com.sreesharp.imagesearch.models.TouchImageView
         android:id="@+id/ivDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -12,7 +12,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:scaleType="centerCrop"
+        android:scaleType="center"
+        android:adjustViewBounds="true"
         android:src="@drawable/ic_launcher" />
 
 </RelativeLayout>

@@ -4,16 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
-import com.sreesharp.imagesearch.R;
-import com.sreesharp.imagesearch.R.id;
-import com.sreesharp.imagesearch.R.layout;
-import com.sreesharp.imagesearch.R.menu;
-
 import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -21,14 +12,14 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ShareActionProvider;
-import android.os.Build;
+
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+import com.sreesharp.imagesearch.R;
+import com.sreesharp.imagesearch.models.TouchImageView;
 
 public class DetailsActivity extends Activity {
 	
@@ -40,8 +31,10 @@ public class DetailsActivity extends Activity {
 		setContentView(R.layout.activity_details);
 		
 		String url = getIntent().getStringExtra("url");
-		ImageView ivDetail = (ImageView)findViewById(R.id.ivDetail);
-		Picasso.with(this).load(url).into(ivDetail, new Callback() {
+		int height = getIntent().getIntExtra("height", 600);
+		int width = getIntent().getIntExtra("width", 600);
+		TouchImageView ivDetail = (TouchImageView)findViewById(R.id.ivDetail);
+		Picasso.with(this).load(url).resize(width, height).into(ivDetail, new Callback() {
 			@Override
 			public void onSuccess() {
 				 setupShareIntent();
@@ -55,19 +48,26 @@ public class DetailsActivity extends Activity {
 	}
 	
 	private void setupShareIntent() {
-		ImageView ivImage = (ImageView) findViewById(R.id.ivDetail);
-	    Uri bmpUri = getLocalBitmapUri(ivImage); 
-	    // Create share intent as described above
-	    Intent shareIntent = new Intent();
-	    shareIntent.setAction(Intent.ACTION_SEND);
-	    shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
-	    shareIntent.setType("image/*");
-	    // Attach share event to the menu item provider
-	    shareAction.setShareIntent(shareIntent);
+		try
+		{
+			TouchImageView ivImage = (TouchImageView) findViewById(R.id.ivDetail);
+		    Uri bmpUri = getLocalBitmapUri(ivImage); 
+		    // Create share intent as described above
+		    Intent shareIntent = new Intent();
+		    shareIntent.setAction(Intent.ACTION_SEND);
+		    shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+		    shareIntent.setType("image/*");
+		    // Attach share event to the menu item provider
+		    shareAction.setShareIntent(shareIntent);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
 		
 	}
 	
-	public Uri getLocalBitmapUri(ImageView imageView) {
+	public Uri getLocalBitmapUri(TouchImageView imageView) {
 	    // Extract Bitmap from ImageView drawable
 	    Drawable drawable = imageView.getDrawable();
 	    Bitmap bmp = null;

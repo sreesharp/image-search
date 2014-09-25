@@ -10,6 +10,8 @@ public class ImageResult {
 	public String title;
 	public String imageUrl;
 	public String thumbnailUrl;
+	public int width;
+	public int height;
 	
 	public ImageResult(JSONObject jsonObj)
 	{
@@ -17,6 +19,8 @@ public class ImageResult {
 			title = jsonObj.getString("titleNoFormatting");
 			imageUrl = jsonObj.getString("url");
 			thumbnailUrl = jsonObj.getString("tbUrl");
+			width = jsonObj.getInt("width");
+			height = jsonObj.getInt("height");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
